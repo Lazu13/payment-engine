@@ -17,7 +17,7 @@ pub enum TransactionType {
 pub struct TransactionDTO {
     r#type: TransactionType,
     client: ClientId,
-    tx: TransactionId,
+    pub tx: TransactionId,
     amount: Option<Decimal>,
 }
 
