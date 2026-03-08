@@ -1,5 +1,7 @@
 use rust_decimal::Decimal;
 use thiserror::Error;
+use tokio::sync::mpsc::error::SendError;
+use crate::model::transaction::Transaction;
 
 #[derive(Error, Debug)]
 pub enum MyError {
@@ -18,6 +20,18 @@ pub enum MyError {
     #[error("Invalid precision: {0}")]
     InvalidAmountPrecision(Decimal),
 
+    #[error("Processing error {0}")]
+    ProcessingError(SendError<Transaction>),
+
+    #[error("No sufficient funds")]
+    NoSufficientFunds,
+
+    #[error("Account is locked")]
+    AccountLocked,
+
+    #[error("Transaction not found")]
+    TransactionNotFound,
+
     #[error("CSV error: {0}")]
     CSV(String),
 
@@ -30,12 +44,12 @@ pub enum MyError {
 
 impl From<csv::Error> for MyError {
     fn from(err: csv::Error) -> Self {
-        MyError::CSV(err.to_string())
+        Self::CSV(err.to_string())
     }
 }
 
 impl From<std::io::Error> for MyError {
     fn from(err: std::io::Error) -> Self {
-        MyError::IO(err.to_string())
+        Self::IO(err.to_string())
     }
 }

@@ -5,7 +5,7 @@ use std::ops::Deref;
 
 pub const AMOUNT_PRECISION: u32 = 4;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub struct PositiveScale4BigDecimal(Decimal);
 
 impl PositiveScale4BigDecimal {
