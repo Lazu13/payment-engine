@@ -3,7 +3,7 @@ use thiserror::Error;
 use tokio::sync::mpsc::error::SendError;
 use crate::model::transaction::Transaction;
 
-#[derive(Error, Debug)]
+#[derive(Error, Debug, PartialEq)]
 pub enum MyError {
     #[error("Amount is missing")]
     MissingAmount(),
