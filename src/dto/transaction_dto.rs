@@ -86,6 +86,51 @@ mod tests {
     }
 
     #[test]
+    fn test_negative_amount_for_withdrawal() {
+        let amount = Decimal::new(-1, 4);
+        let dto = TransactionDTO {
+            r#type: TransactionType::Withdrawal,
+            client: ClientId(1),
+            tx: TransactionId(1),
+            amount: Some(amount),
+        };
+
+        let txn: Result<Transaction, _> = dto.try_into();
+
+        assert!(matches!(txn, Err(MyError::NegativeAmount(_amount))));
+    }
+
+    #[test]
+    fn test_zero_amount_for_withdrawal() {
+        let amount = Decimal::new(0, 4);
+        let dto = TransactionDTO {
+            r#type: TransactionType::Withdrawal,
+            client: ClientId(1),
+            tx: TransactionId(1),
+            amount: Some(amount),
+        };
+
+        let txn: Result<Transaction, _> = dto.try_into();
+
+        assert!(matches!(txn, Err(MyError::ZeroAmount(_amount))));
+    }
+
+    #[test]
+    fn test_invalid_precision_for_withdrawal() {
+        let amount = Decimal::new(1, 6);
+        let dto = TransactionDTO {
+            r#type: TransactionType::Withdrawal,
+            client: ClientId(1),
+            tx: TransactionId(1),
+            amount: Some(amount),
+        };
+
+        let txn: Result<Transaction, _> = dto.try_into();
+
+        assert!(matches!(txn, Err(MyError::InvalidAmountPrecision(_amount))));
+    }
+
+    #[test]
     fn test_deposit_mapping() {
         let dto = TransactionDTO {
             r#type: TransactionType::Deposit,
@@ -118,6 +163,52 @@ mod tests {
 
         assert!(matches!(txn, Err(MyError::MissingAmount())));
     }
+
+    #[test]
+    fn test_negative_amount_for_deposit() {
+        let amount = Decimal::new(-1, 4);
+        let dto = TransactionDTO {
+            r#type: TransactionType::Deposit,
+            client: ClientId(1),
+            tx: TransactionId(1),
+            amount: Some(amount),
+        };
+
+        let txn: Result<Transaction, _> = dto.try_into();
+
+        assert!(matches!(txn, Err(MyError::NegativeAmount(_amount))));
+    }
+
+    #[test]
+    fn test_zero_amount_for_deposit() {
+        let amount = Decimal::new(0, 4);
+        let dto = TransactionDTO {
+            r#type: TransactionType::Deposit,
+            client: ClientId(1),
+            tx: TransactionId(1),
+            amount: Some(amount),
+        };
+
+        let txn: Result<Transaction, _> = dto.try_into();
+
+        assert!(matches!(txn, Err(MyError::ZeroAmount(_amount))));
+    }
+
+    #[test]
+    fn test_invalid_precision_for_deposit() {
+        let amount = Decimal::new(1, 6);
+        let dto = TransactionDTO {
+            r#type: TransactionType::Deposit,
+            client: ClientId(1),
+            tx: TransactionId(1),
+            amount: Some(amount),
+        };
+
+        let txn: Result<Transaction, _> = dto.try_into();
+
+        assert!(matches!(txn, Err(MyError::InvalidAmountPrecision(_amount))));
+    }
+
 
     #[test]
     fn test_dispute_mapping() {

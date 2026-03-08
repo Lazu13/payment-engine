@@ -1,3 +1,4 @@
+use rust_decimal::Decimal;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -7,6 +8,15 @@ pub enum MyError {
 
     #[error("Program argument is missing")]
     MissingArgument,
+
+    #[error("Negative amount: {0}")]
+    NegativeAmount(Decimal),
+
+    #[error("Zero amount: {0}")]
+    ZeroAmount(Decimal),
+
+    #[error("Invalid precision: {0}")]
+    InvalidAmountPrecision(Decimal),
 
     #[error("CSV error: {0}")]
     CSV(String),
