@@ -12,6 +12,19 @@ pub enum Transaction {
     Resolve(Resolve),
     Chargeback(Chargeback),
 }
+
+impl Transaction {
+    pub fn client(&self) -> ClientId {
+        match self {
+            Transaction::Withdrawal(with) => with.client,
+            Transaction::Deposit(dep) => dep.client,
+            Transaction::Dispute(disp) => disp.client,
+            Transaction::Resolve(res) => res.client,
+            Transaction::Chargeback(chg) => chg.client,
+        }
+    }
+}
+
 #[derive(Debug, PartialEq)]
 pub struct Deposit {
     pub client: ClientId,
