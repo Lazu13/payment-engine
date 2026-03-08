@@ -1,7 +1,7 @@
 use crate::model::client_id::ClientId;
 use crate::model::my_error::MyError;
 use crate::model::my_result::MyResult;
-use crate::model::positive_big_decimal::PositiveScale4BigDecimal;
+use crate::model::positive_big_decimal::PositiveScale4Decimal;
 use crate::model::transaction_id::TransactionId;
 use rust_decimal::Decimal;
 
@@ -30,13 +30,13 @@ impl Transaction {
 pub struct Deposit {
     pub client: ClientId,
     pub tx: TransactionId,
-    pub amount: PositiveScale4BigDecimal,
+    pub amount: PositiveScale4Decimal,
 }
 
 impl Deposit {
     pub fn new(client: ClientId, tx: TransactionId, opt_amount: Option<Decimal>) -> MyResult<Self> {
         let amount = opt_amount.ok_or(MyError::MissingAmount())?;
-        let pos_amount = PositiveScale4BigDecimal::new(amount)?;
+        let pos_amount = PositiveScale4Decimal::new(amount)?;
 
         Ok(Deposit {
             client,
@@ -50,13 +50,13 @@ impl Deposit {
 pub struct Withdrawal {
     pub client: ClientId,
     pub tx: TransactionId,
-    pub amount: PositiveScale4BigDecimal,
+    pub amount: PositiveScale4Decimal,
 }
 
 impl Withdrawal {
     pub fn new(client: ClientId, tx: TransactionId, opt_amount: Option<Decimal>) -> MyResult<Self> {
         let amount = opt_amount.ok_or(MyError::MissingAmount())?;
-        let pos_amount = PositiveScale4BigDecimal::new(amount)?;
+        let pos_amount = PositiveScale4Decimal::new(amount)?;
 
         Ok(Withdrawal {
             client,

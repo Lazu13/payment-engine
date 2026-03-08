@@ -6,9 +6,9 @@ use std::ops::Deref;
 pub const AMOUNT_PRECISION: u32 = 4;
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
-pub struct PositiveScale4BigDecimal(Decimal);
+pub struct PositiveScale4Decimal(Decimal);
 
-impl PositiveScale4BigDecimal {
+impl PositiveScale4Decimal {
     pub fn new(value: Decimal) -> MyResult<Self> {
         if value.is_sign_negative() {
             Err(MyError::NegativeAmount(value))
@@ -17,12 +17,12 @@ impl PositiveScale4BigDecimal {
         } else if value.is_zero() {
             Err(MyError::ZeroAmount(value))
         } else {
-            Ok(PositiveScale4BigDecimal(value))
+            Ok(PositiveScale4Decimal(value))
         }
     }
 }
 
-impl Deref for PositiveScale4BigDecimal {
+impl Deref for PositiveScale4Decimal {
     type Target = Decimal;
 
     fn deref(&self) -> &Self::Target {
